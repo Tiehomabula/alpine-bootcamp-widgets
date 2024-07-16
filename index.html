@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alpine Bootcamp widgets</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>AlpineJS Bootcamp Widgets</h1>
+    <!--script src="functions/greet.js" defer></script> 
+    <div x-data="{ name: 'Tieho', greeting: ''}">
+         <Input field for user's name> 
+        <input type="text" x-model="name" placeholder="Enter your name">
+         <Button to trigger the greeting >
+        <button x-on:click="greeting = greet(name)">Greet</button>
+        < Display the greeting >
+        <p x-text="greeting"></p>
+
+        <div x-data="{ lang: 'en', translations: {} }">
+        < Language buttons >
+        <button x-on:click="lang = 'languages/en.json'">English</button>
+        <button x-on:click="lang = 'languages/sot.json'">Sesotho</button>
+        <button x-on:click="lang = 'languages/zul.json'">Isizulu</button>
+    
+        < Display the greeting >
+        <p x-text="translations.greeting"></p>
+    </div>
+    </div-->  
+
+    <body>
+        <div class="container">
+            
+            
+            <!--transport fee widget-->
+            <div x-data="transportFeeWidget()" >
+                <i> <h2 >Total Transport Fee</h2>
+                <div>
+                    <label><input type="radio" name="shift" value="morning" x-model="shift" /> Morning</label>
+                    <label><input type="radio" name="shift" value="afternoon" x-model="shift" /> Afternoon</label>
+                    <label><input type="radio" name="shift" value="night" x-model="shift" /> Evening</label>
+                </div>
+                <button @click="calculateFee()" >Total Fee cost</button>
+               <p x-text="feeMessage"  ></p> 
+    
+            </div>
+            <script>
+                function transportFeeWidget() {
+                    return {
+                        shift: '',
+                        feeMessage: '',
+                        calculateFee() {
+                            const fees = {
+                                morning: 'R20',
+                                afternoon: 'R10',
+                                night: 'R5'
+                            };
+                            this.feeMessage = `The transport fee for ${this.shift} shift is ${fees[this.shift]}`;
+                        }
+                    };
+                }
+             </script>
+             </div>
+
+
+            <!--greet widget-->
+            <div class="container">
+            <div x-data="greetWidget()">
+                <h2>Greet Widget</h2>
+                <select x-model="selectedLanguage" >
+                    <option value="English">English</option>
+                    <option value="Sesotho">Sesotho</option>
+                    <option value="Isizulu">Isizulu</option>
+                </select>
+                <input type="text" x-model="name" placeholder="Enter your name">
+                <button @click="greet()">Greet</button>
+                <p x-text="greetingMessage"></p>
+            </div>
+            <script>
+                function greetWidget() {
+                    return {
+                        selectedLanguage: 'english',
+                        name: '',
+                        greetingMessage: '',
+                        greet() {
+                            if (this.name.trim() === '') {
+                                this.greetingMessage = 'No name entered. Please try again.';
+                            } else {
+                                const greetings = {
+                                    english: 'Hello',
+                                   Sesotho: 'Dumela',
+                                    Isizulu: 'Sawubona'
+                                };
+                                this.greetingMessage = `${greetings[this.selectedLanguage]}, ${this.name}!`;
+    
+                                // Clear the message after 3 seconds
+                                setTimeout(() => {
+                                    this.greetingMessage = '';
+                                }, 3000);
+                            }
+                        }
+                    };
+                }
+            </script>
+        </div>
+    </div>
+    
+           <div class="container">
+            <!--pone bill widget-->
+            <div x-data="phoneBillWidget()" >
+                <h2 >Total Phone Bill</h2>
+                <input type="text" x-model="phoneString" placeholder="Please enter your total phone usage, calls and sms"
+                    />
+                <button @click="calculateTotal()">Calculate Total Phone Bill</button>
+                <p x-text="totalBill" ></p>
+            </div>
+            <script>
+                 function totalPhoneBill(item) {
+                if (!item.trim()) {
+                    return "No value entered. Please try again.";
+                }
+    
+                let count = 0;
+                var newItem = item.split(",");
+                for (var i = 0; i < newItem.length; i++) {
+                    var currentItem = newItem[i].trim();
+                    if (currentItem.startsWith("s")) {
+                        count += 0.65;
+                    } else {
+                        count += 2.75;
+                    }
+                }
+                return "R" + count.toFixed(2);
+            }
+    
+            function phoneBillWidget() {
+                return {
+                    phoneString: '',
+                    totalBill: '',
+                    calculateTotal() {
+                        this.totalBill = totalPhoneBill(this.phoneString);
+                    }
+                };
+            }
+            </script>
+           </div>
+           
+            <!--word game widget-->
+            <div class="container">
+            <div x-data="wordGameWidget()" >
+                <h2 >Word Game</h2>
+                <input type="text" x-model="sentence" placeholder="Enter a sentence"  />
+                <button @click="processSentence()" >Process Sentence</button>
+                <p x-text="longestWord" ></p>
+                <p x-text="shortestWord" ></p>
+                <p x-text="wordLengths" ></p>
+            </div>
+            <script>
+                function wordGameWidget() {
+                    return {
+                        sentence: '',
+                        longestWord: '',
+                        shortestWord: '',
+                        wordLengths: '',
+                        processSentence() {
+                            const words = this.sentence.split(' ').filter(word => word.trim().length > 0);
+                            this.longestWord = `Longest word: ${words.reduce((a, b) => a.length > b.length ? a : b)}`;
+                            this.shortestWord = `Shortest word: ${words.reduce((a, b) => a.length < b.length ? a : b)}`;
+                            this.wordLengths = `Word lengths: ${words.map(word => word.length).join(', ')}`;
+                        }
+                    };
+                }
+               
+            </script>
+            </i>
+            </div>
+           
+    
+
+        </div>
+    </body>
+    
+    </html>
+    
+
+    
+</body>
+</html>

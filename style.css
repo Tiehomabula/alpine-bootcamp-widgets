@@ -1,0 +1,16 @@
+body{
+    background-color: rgb(160, 115, 202);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    /*background-image: url(purple\ image.jpg);
+    filter:blur(50px);
+    -webkit-filter: blur(50px);
+    height:100%-->*/
+}
+
+.container{
+    border-radius: 1em;
+    text-align: center;
+    border: 0.3em;
+    border-style: double;
+    border-color: rgb(240, 248, 255);
+}
